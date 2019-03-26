@@ -33,7 +33,9 @@ class Torch{
   }
   
   draw(){
-    fill(255, 245, 160)
+    let distToMouse = player.pos.dist(createVector(mouseX,mouseY))
+    let red = map(distToMouse,500,0,120,255)
+    fill(red, 0, 0)
     noStroke()
     let direction = cursor.pos.copy().sub(player.pos);
     let tv1 = direction.copy().rotate(-HALF_PI/4).add(player.pos);
@@ -49,9 +51,11 @@ class Torch{
     this.bR.add(player.pos); 
     this.bL.add(player.pos);
     let torchHeadSize = createVector(mouseX,mouseY).dist(player.pos)
-    torchHeadSize*=0.82
-    ellipse(mouseX,mouseY,torchHeadSize,torchHeadSize)
+    torchHeadSize*=0.85
     quad(this.bL.x,this.bL.y,this.bR.x,this.bR.y,this.tL.x,this.tL.y,this.tR.x,this.tR.y)
+
+    let ellipsePos = this.tL.copy().add(this.tR).div(2)
+    ellipse(ellipsePos.x,ellipsePos.y,torchHeadSize,torchHeadSize)
   }
 }
 
@@ -71,7 +75,7 @@ class Player{
   }
 
   bigDist(){
-    return this.pos.dist(cursor.pos) > 150;
+    return this.pos.dist(cursor.pos) > 250;
   }
   
   handleAttraction(){
