@@ -10,22 +10,31 @@ function setup() {
   background(255, 112, 84);
   cursor = new Cursor();
   player = new Player();
-  torch = new Torch(player.pos,cursor.pos);
+  torch = new Torch();
   objs.push(torch);
   objs.push(cursor);
   objs.push(player);
   objs.push(new Block())
   objs.push(new Block())
+
+  console.log(player instanceof Player)
 }
 
 function draw() {
   background(255, 112, 84);
   objs.map(obj => obj.draw());
   objs.map(obj => obj.update());
+
+/*   objs.filter(o => o instanceof Torch).map(torch => {
+    objs.filter(o2 => o2 instanceof Enemy).map(enemy => {
+      // check collision torchead and enemy
+    })
+  }) */
 }
 
-class Torch{
+class Torch extends Block{
   constructor(){
+    super()
   }
   
   update(){
@@ -54,8 +63,9 @@ class Torch{
     torchHeadSize*=0.85
     quad(this.bL.x,this.bL.y,this.bR.x,this.bR.y,this.tL.x,this.tL.y,this.tR.x,this.tR.y)
 
-    let ellipsePos = this.tL.copy().add(this.tR).div(2)
-    ellipse(ellipsePos.x,ellipsePos.y,torchHeadSize,torchHeadSize)
+    this.pos = this.tL.copy().add(this.tR).div(2)
+
+    ellipse(this.pos.x,this.pos.y,torchHeadSize,torchHeadSize)
   }
 }
 
@@ -92,24 +102,11 @@ class Player{
   }
 }
 
-class Block{
+
+
+class Cursor extends Block{
   constructor(){
-    this.pos = createVector(random(width), random(height));
-    this.size = 5;
-  }
-
-  update() {
-
-  }
-
-  draw() {
-    rect(this.pos.x,this.pos.y,this.size,this.size);
-  }
-}
-
-class Cursor{
-  constructor(){
-    this.pos = createVector(mouseX,mouseY);
+    super(createVector(mouseX,mouseY)) 
   }
 
   update() {
@@ -121,3 +118,4 @@ class Cursor{
     rect(this.pos.x,this.pos.y,this.size,this.size);
   }
 }
+
